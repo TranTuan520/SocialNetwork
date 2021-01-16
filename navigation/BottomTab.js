@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, } from 'react-native'
 import { createBottomTabNavigator  } from "@react-navigation/bottom-tabs";
  import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Home from "../screens/Home";
@@ -13,7 +13,7 @@ const BottomTab = () => {
     return (
        <bottomTab.Navigator
            tabBarOptions = {{
-               activeTintColor:'black',                                            
+               activeTintColor:'#E1306C',                                            
            }}           
        >
            <bottomTab.Screen name = 'Home' component = {Home} options = {{              
@@ -26,7 +26,11 @@ const BottomTab = () => {
            }}  />
              <bottomTab.Screen name = 'Post' component = {Post} options = {{
                   tabBarLabel: ()=>{return null} ,
-               tabBarIcon: ({color})=>(<Icon name = 'plus-box-outline' color  = {color} size  = {26}/>)
+               tabBarIcon: ({color})=>(
+                //    <View style = {{height: 50, width: 50, justifyContent:'center', alignItems:'center', backgroundColor: '#fff', borderRadius: 25, top: -15, elevation: 4, shadowColor: '#E1306C'}}>
+                       <Icon name = 'plus-box-outline' color  = {color} size  = {26}/> 
+                   //</View>
+               )
            }}  />
              <bottomTab.Screen name = 'Follow' component = {Follow} options = {{
                   tabBarLabel: ()=>{return null} ,      

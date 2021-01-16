@@ -8,27 +8,35 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native'
+import {KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 const {width, height} = Dimensions.get('window');
 const Login = () => {
+    const navigation = useNavigation();
     const refPassword = useRef(null);
-    focusPassword =  ()=>{
-        refPassword.current.focus()
-    }
+   
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+     
       <LinearGradient
         colors={['#833AB4', '#C13584', '#E1306C']}
         style={styles.gradient}>
-        <KeyboardAvoidingView style={styles.containerLoginForm}>
-          <Image  
-            style={{width: 150, height: 150, margin: 6, marginVertical: 32}}
+      <KeyboardAwareScrollView      
+      contentContainerStyle = {styles.KeyboardAwareScrollView}
+      showsVerticalScrollIndicator = {false}>         
+      <Image  
+            style={styles.logo}
             source={require('../assets/images/logo4.png')}
           />
-          <TextInput
-            style={[styles.textInput, {marginBottom: 20}]}
+         
+        <View style = {styles.containerLoginForm}>
+        <TextInput
+            style={[styles.textInput, {marginBottom: 8}]}
             placeholder="Number, username or email"
             placeholderTextColor = '#546e7a'
             keyboardType  = 'email-address'
@@ -41,14 +49,20 @@ const Login = () => {
             placeholderTextColor = '#546e7a'
             secureTextEntry
             returnKeyType = 'done'
-            ref = {refPassword}
+       
+            ref = {refPassword}           
+            onSubmitEditing = {()=>navigation.navigate('Home')}
           />
           <TouchableOpacity activeOpacity={0.8} style = {{alignSelf:'flex-end'}}>
             <Text style={styles.textForgotPassword}>Forgot your password</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} style={styles.buttonLogin}>
+          <TouchableOpacity
+          onPress = {()=>navigation.navigate('Home')}
+          activeOpacity={0.8} style={styles.buttonLogin      }  
+        >
             <Text style = {{color: '#fff', fontSize: 18}}>Log In</Text>
           </TouchableOpacity>
+        
           <TouchableOpacity activeOpacity={0.8} style={styles.buttonFB}>
             <Icon
               name="facebook"
@@ -56,35 +70,53 @@ const Login = () => {
               color="#ffff"
               style={{marginEnd: 6}}
             />
-            <Text style={styles.textForgotPassword}>
+            <Text style={styles.textLogin}>
               Continue with Facebook
-            </Text>
+            </Text>           
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+          <Text style={{color:'#c4c4c4c4'}}>
+              Or
+            </Text>
+            <TouchableOpacity activeOpacity={0.8} style={styles.buttonFB}>           
+            <Text style={styles.textLogin}>
+              Sign Up
+            </Text>           
+          </TouchableOpacity>
+        </View>      
+      </KeyboardAwareScrollView>
+   
+    
+    
       </LinearGradient>
-    </View>
+     
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1,   
   },
+  KeyboardAwareScrollView:{width: width, alignItems:'center' },
   gradient: {
     flex: 1,
     alignItems: 'center',
+    justifyContent:'center'
   },
   textInput: {
     width: 300,
     height: 40,
     backgroundColor: 'rgba(255,255,255,0.8)',
     borderRadius: 4,
-    marginHorizontal: 32,
-  
-    
+    marginHorizontal: 32,  
   },
+  logo:{
+    width: 250,
+     height: 250, 
+     marginVertical: 64
+    },
   textForgotPassword: {
     color: '#fff',    
-    fontSize: 12   
+    fontSize: 12  , 
   },
   buttonLogin: {
     backgroundColor: '#00A3FF',
@@ -105,7 +137,11 @@ const styles = StyleSheet.create({
   },
   containerLoginForm:{
       width: 300,
-      alignItems: 'center',     
+      alignItems: 'center',   
+      
+  }, 
+  textLogin:{
+    fontSize: 16, color:'white'
   }
 });
 export default Login;
