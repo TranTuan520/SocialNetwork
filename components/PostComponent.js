@@ -15,7 +15,7 @@ const PostComponent = ({item}) => {
                </View>
                 <Icon name = 'dots-vertical' size = {26} color = 'black'/>
             </View>
-            <Image source = {{uri: item.images[0]}} style = {{width: width, height: 400, backgroundColor: '#ffff'}}/>
+            <Image resizeMethod = 'resize' source = {{uri: item.images[0]}} style = {{width: width, height: 400, backgroundColor: '#ffff'}}/>
             {renderFooter({item})}
         </View>
     )

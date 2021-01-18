@@ -16,6 +16,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native'
 import {KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 const {width, height} = Dimensions.get('window');
+
+//test call native module
+//import { NativeModules } from "react-native";
+//const {ToastModule} = NativeModules;
+
+
 const Login = () => {
     const navigation = useNavigation();
     const refPassword = useRef(null);
@@ -77,7 +83,9 @@ const Login = () => {
           <Text style={{color:'#c4c4c4c4'}}>
               Or
             </Text>
-            <TouchableOpacity activeOpacity={0.8} style={styles.buttonFB}>           
+            <TouchableOpacity activeOpacity={0.8} style={styles.buttonFB} 
+            //onPress = {()=>ToastModule.showText('this is a module from native', ToastModule.LENGTH_SHORT)}
+            >           
             <Text style={styles.textLogin}>
               Sign Up
             </Text>           
