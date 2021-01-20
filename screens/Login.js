@@ -37,7 +37,7 @@ const Login = () => {
       showsVerticalScrollIndicator = {false}>         
       <Image  
             style={styles.logo}
-            source={require('../assets/images/logo4.png')}
+            source={require('../assets/images/logo7.png')}
           />
          
         <View style = {styles.containerLoginForm}>
