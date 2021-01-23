@@ -1,5 +1,5 @@
 import { useBackButton } from '@react-navigation/native';
-import React, {useState,} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,8 @@ import {
   FlatList,
   Modal,
   TouchableWithoutFeedback,
-  BackHandler
+  BackHandler,
+  Animated
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -292,8 +293,10 @@ const Posts = [
     like: 99,
   },
 ];
-
+ 
+ 
 const Search = () => { 
+  const scalePost = useRef(new Animated.Value(0)).current;
   const [visible, setvisible] = useState(false);
   const [itemPost, setItemPost] = useState([]);
   const  renderPosts = () => {
@@ -322,7 +325,9 @@ const Search = () => {
   function renderItemPost({item}) {
     return (
       <TouchableOpacity
+      delayLongPress = {300}
         onLongPress={() => {
+          ScalePost();
           setItemPost(item);
           setvisible(true);
         }}
@@ -343,12 +348,33 @@ const Search = () => {
       </TouchableOpacity>
     );
   }
- 
+  function ScalePost  (){
+    Animated.spring(scalePost, {
+      toValue: 1, 
+      friction: 7,
+      useNativeDriver: true,
+      tension: 70,
+      
+    }).start()
+  }
 
   function modalPost(itemPost) {
+   
     return (
       <Modal visible={visible} onRequestClose = {()=>setvisible(false)} transparent animationType="fade">
-        <TouchableWithoutFeedback onPress={() => setvisible(!visible)}>
+        <TouchableWithoutFeedback onPress={() => {
+          Animated.spring(scalePost, {
+            toValue: 0, 
+            friction: 100,    
+            tension: 360,                       
+            useNativeDriver: true,
+            // restSpeedThreshold: 1,
+          }).start(()=>{
+            setvisible(!visible)
+          });
+        
+        }}
+          >
           <View
             style={{
               flex: 1,
@@ -356,13 +382,15 @@ const Search = () => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <TouchableOpacity
+           <TouchableWithoutFeedback>
+           <Animated.View
               activeOpacity={1}
               style={{
                 width: width - 100,
                 height: height - 200,
                 maxHeight: 900,
                 maxWidth: 700,
+                transform: [{scale: scalePost}]
               }}>
               <View
                 style={{
@@ -380,6 +408,7 @@ const Search = () => {
                     height: 28,
                     borderRadius: 19,
                     marginStart: 8,
+                   
                   }}
                 />
                 <Text
@@ -405,14 +434,15 @@ const Search = () => {
                   alignItems: 'center',
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  paddingHorizontal: 8,
+                  paddingHorizontal: 32,
                 }}>
                 <Icon name="heart-outline" size={28} />
                 <Icon name="account-circle-outline" size={28} />
                 <Icon name="share-outline" size={28} />
                 <Icon name="dots-vertical" size={28} />
               </View>
-            </TouchableOpacity>
+            </Animated.View>
+           </TouchableWithoutFeedback>
           </View>
         </TouchableWithoutFeedback>
       </Modal>

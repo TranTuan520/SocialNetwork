@@ -262,14 +262,14 @@ const Profile = () => {
         follow: ['mmyyxx',  'miu.1301', 'svg'],
         follwing: ['mmyyxx', 'rena', 'sena']
     }
-
+    const [selectCat, setSelectedCat] = useState('PICTURE');
     const scrollY = useRef(new Animated.Value(0)).current; 
     
      const maxTop = 40;
      const minTop = -245;
      const topScroll = scrollY.interpolate({
-       inputRange: [0,  maxTop - minTop],
-       outputRange: [maxTop, minTop + 40 + 40 ], //header + tab 
+       inputRange: [0, maxTop - minTop],
+       outputRange: [maxTop , minTop + 40 + 40 ], //header + tab 
        extrapolate: 'clamp'
      })
 
@@ -347,17 +347,17 @@ const Profile = () => {
                   <Text>Chỉnh sửa trang cá nhân</Text>
             </TouchableOpacity>
            </View>
-         
-           <View>
+           <View >
            <View style = {{flexDirection:'row', alignItems:'flex-end', height: 40}}>
               <TouchableOpacity style = {{justifyContent:'center', alignItems:'center', height: 40, backgroundColor: '#fff', width: width/2,}}>
-                  <Icon name = 'view-dashboard-outline' size = {26} />                              
+                  <Icon name = 'view-dashboard-outline' size = {26} color = {selectCat === 'PICTURE'? 'black': 'gray'} />                              
               </TouchableOpacity>
               <TouchableOpacity style = {{justifyContent:'center', alignItems:'center', height: 40, backgroundColor: '#fff', width: width/2}}>
-                <Icon name = 'contacts-outline' size = {26} />
+                <Icon name = 'contacts-outline' size = {26}  color = {selectCat === 'STORY'? 'black': 'gray'} />
               </TouchableOpacity>
             </View>
            </View>
+          
            
           </Animated.View>
         );
@@ -377,8 +377,7 @@ const Profile = () => {
          
          style={{ width: width/3, height: width/3 }}
         source={{
-            uri: item.urlImage,
-            headers: { Authorization: 'someAuthToken' },
+            uri: item.urlImage,           
             priority: FImage.priority.normal,
         }}
         resizeMode={FImage.resizeMode.cover}
@@ -386,64 +385,53 @@ const Profile = () => {
       </TouchableOpacity>
       )
     }
-  const  renderRightActions = (progress, dragX) =>{
-
-    
-    const scale = dragX.interpolate({
-      inputRange: [-250, -150, -50, 0],
-      outputRange:[1, 0.7, 0.3, 0],
-      extrapolate:'clamp'
-    })
+    const renderList = () =>{
       return(
-        <Animated.View style = {{transform: [{scale: scale}]}}>
-          <FlatList 
-          removeClippedSubviews
-          disableVirtualization
-        scrollsToTop = {true}
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        data = {Posts}
-        numColumns = {3}
-        onScroll={Animated.event([
-      { nativeEvent: { contentOffset: { y: scrollY } } }
-    ])}
-      scrollEventThrottle={16}
-      style = {{paddingTop: -minTop   }} 
-     
-     renderItem = {(item)=>renderitem(item)}
-     />
-        </Animated.View>
+       <FlatList
+
+       nestedScrollEnabled
+       showsVerticalScrollIndicator={false}
+       data = {Posts}
+       numColumns = {3}
+       onScroll={Animated.event([
+     { nativeEvent: { contentOffset: { y: scrollY } } }
+   ])}
+     scrollEventThrottle={16}
+     style = {{paddingTop: -minTop   }} 
+    
+    renderItem = {(item)=>renderitem(item)}
+    />
       )
     }
+  const  renderRightActions = (progress, dragX) =>{
+    const scale = dragX.interpolate({
+      inputRange: [-width,  0],
+      outputRange:[1, 0],
+      extrapolate:'clamp'
+    })
+      return (
+        <Animated.View style={{transform: [{scale: scale}]}}>
+          {renderList()}
+        </Animated.View>
+      );
+    }
+ 
     return (
         <SafeAreaView style = {{flex :1}}> 
-            {renderHeader()}
+           
+           {renderHeader()}
             {renderInfo()}     
+           
             <ScrollView  onScroll={Animated.event([
             { nativeEvent: { contentOffset: { y: scrollY } } }
           ])}        
             scrollEventThrottle={16}
-            style = {{  zIndex: 0,}}  
+            style = {{  zIndex: 0, backgroundColor: '#fff'}}  
            >
-             <Swipeable renderRightActions = {renderRightActions}  >
-             <FlatList
-              nestedScrollEnabled
-              showsVerticalScrollIndicator={false}
-              data = {Posts}
-              numColumns = {3}
-              onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { y: scrollY } } }
-          ])}
-            scrollEventThrottle={16}
-            style = {{paddingTop: -minTop   }} 
-           
-           renderItem = {(item)=>renderitem(item)}
-           />
-             </Swipeable>
-    
+             <Swipeable friction = {0.7} onSwipeableRightWillOpen = {()=>setSelectedCat('STORY')} onSwipeableWillClose = {()=>setSelectedCat('PICTURE')} renderRightActions = {renderRightActions}  >
+            {renderList()}
+             </Swipeable>   
                    </ScrollView> 
-                   
-          
         </SafeAreaView>
     )
 }

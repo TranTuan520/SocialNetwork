@@ -13,8 +13,11 @@ const BottomTab = () => {
     return (
        <bottomTab.Navigator
            tabBarOptions = {{
-               activeTintColor:'#E1306C',                                            
-           }}           
+               activeTintColor:'#E1306C',   
+               style :{}     ,
+                keyboardHidesTabBar: true
+           }}     
+              
        >
            <bottomTab.Screen name = 'Home' component = {Home} options = {{              
                tabBarLabel: ()=>{return null},     

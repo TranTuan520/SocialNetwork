@@ -133,7 +133,7 @@ const Home = () => {
            <SafeAreaView  style = {{flex: 1}}>
                {renderHeader()}     
               
-               <ScrollView>
+               <ScrollView maximumZoomScale = {5}>
                {renderStories()}
                 <Post item = {posts[0]} />
                 <Post item = {posts[1]} />
