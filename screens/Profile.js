@@ -6,6 +6,8 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import tab from '../components/tab'
 import TopTab from "../navigation/TopTabNavigation";
 import FImage from 'react-native-fast-image';
+import auth from '@react-native-firebase/auth'
+import { useNavigation } from "@react-navigation/native";
 const Tab = createMaterialTopTabNavigator();
 const {width, height} = Dimensions.get('window');
 
@@ -262,6 +264,7 @@ const Profile = () => {
         follow: ['mmyyxx',  'miu.1301', 'svg'],
         follwing: ['mmyyxx', 'rena', 'sena']
     }
+    const navigation = useNavigation();
     const [selectCat, setSelectedCat] = useState('PICTURE');
     const scrollY = useRef(new Animated.Value(0)).current; 
     
@@ -281,8 +284,12 @@ const Profile = () => {
                     <Icon name = 'chevron-down' size = {26}  style = {{bottom: -2}}/>
                 </View>
                 <View style = {{flexDirection: 'row'}}>
-                <Icon name = 'plus' size = {28} color = 'black' style = {{marginEnd: 12}} />
-                    <Icon name = 'menu' size = {28} color = 'black' />
+                <Icon name = 'plus' size = {28} color = 'black' style = {{marginEnd: 12}}  onPress = {()=>
+                {
+                  auth().signOut();
+                  navigation.navigate('Login');
+                }} />
+                <Icon name = 'menu' size = {28} color = 'black' /> 
                 </View>
             </View>
         )

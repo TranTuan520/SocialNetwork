@@ -3,7 +3,7 @@ import { View, Text, Image, SafeAreaView, TouchableOpacity, ScrollView, TextInpu
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ImagePicker from 'react-native-image-crop-picker'
-
+import * as Progress from 'react-native-progress';
 const {width, height} = Dimensions.get('window');
 const Post = () => {
    
@@ -157,6 +157,11 @@ const Post = () => {
             <View>
                {renderHeader()}
                <ScrollView style = {{marginBottom: 90}}>
+               <View style={{ flexDirection: 'row',
+    alignItems: 'center',}}>
+         
+         <Progress.Pie progress={0.4} size={50} />
+        </View>
                {renderInfo()}
                {inputContent()}          
                {
