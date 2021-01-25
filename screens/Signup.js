@@ -81,8 +81,9 @@ const Signup = () => {
             setSuccess(true);
             setVisible(true);
             firestore().collection('Users').doc(auth().currentUser.uid).set({
-              name: name,
-              time: firebase.firestore.FieldValue.serverTimestamp()
+              Name: name,
+              Time: firebase.firestore.FieldValue.serverTimestamp(),
+              PostAudience: 'Public'
             })
             
         }).catch(error=>{

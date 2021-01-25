@@ -1,18 +1,87 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import { View, Text, Image, SafeAreaView, TouchableOpacity, ScrollView, TextInput, Dimensions, Animated } from 'react-native'
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ImagePicker from 'react-native-image-crop-picker'
 import * as Progress from 'react-native-progress';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import storage from "@react-native-firebase/storage";
 const {width, height} = Dimensions.get('window');
+import { useNavigation } from "@react-navigation/native";
 const Post = () => {
-   
+       
+    const btRef = useRef(null);   
+    const navigation = useNavigation();
+    const [isOpen, setisOpen] = useState(true)    
+    const [transferred, setTransferred] = useState(0);
+    const [images, setImages] = useState([]);
+    const [isUploading, setIsUploading] = useState(false);
+    const [keyPost, setKeyPost] = useState('');
+    const [imagesUri, setImagesUri] = useState([]);
+    const [postContent, setPostContent] = useState(''); 
+    const [albums, setAlbums] = useState([]);
+    const [felling, setFelling] = useState([]);    
+    const [user, setUser ] = useState(Object);
+    const [tagFriends, setTagFriends] = useState([]);
+    const [toAlubum, setToAlbum] = useState('');
 
     
-    const btRef = useRef(null);   
-    const [isOpen, setisOpen] = useState(true)    
-    const [contentValue, setContentValue] = useState('');   
-    const [images, setImages] = useState([]);
+
+
+    useEffect(() => {
+      firestore().collection('Users').doc(auth().currentUser.uid).onSnapshot(snap=>{
+        setUser(snap.data());
+        // alert(JSON.stringify(user))
+      })
+    }, [])
+   // alert(JSON.stringify(currentUser))
+    const uploadImages = async () =>{
+      setTransferred(0);
+      setIsUploading(true);
+      //
+      const fileName  = '';    
+      const Images = [];  
+      for(const i of images){
+        fileName = i.substring(i.lastIndexOf('/')+1);
+        const task =  storage().ref(`ImagesPost/${auth().currentUser.uid}/${keyPost}/${fileName}`).putFile(i);
+        task.on('state_changed', snapshot=>{
+          setTransferred(Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000 * 100 / images.length);
+          console.log(transferred);
+        })
+        try {
+          await task;
+      } catch (e) {
+          console.log(e)
+      }
+      Images.push( await storage().ref(`ImagesPost/${auth().currentUser.uid}/${keyPost}/${fileName}`).getDownloadURL())
+      }
+      await firestore().collection('Posts').doc(keyPost).update({
+        Images: images
+      })
+      setIsUploading(false);
+    }
+   const onPost = async () =>{
+   await firestore().collection('Posts').add({
+        User: auth().currentUser.uid,
+        Time: firestore.FieldValue.serverTimestamp(),
+        PostAudience: user.PostAudience,
+        Felling: felling,        
+        Content: postContent,
+        Images: imagesUri,
+        Album: toAlubum,
+        TagFriends: tagFriends,
+        Like: 0,
+        Comments: '',
+        Share: 0
+    }).then(post=>{
+      setKeyPost(post.id);
+      // upload image
+      uploadImages();
+    })
+}
+
+
     const renderVerticalBottomSheet =()=>{
         return(
             <ScrollView
@@ -49,6 +118,13 @@ const Post = () => {
     </ScrollView>
         )
     }
+    const progress = () =>{
+      return( 
+            <View style = {{height: 42, justifyContent:'center'}}>
+               <Progress.Pie progress={0.4} size={25} /> 
+            </View>           
+      )
+    }
     const renderHorizontalBottomSheet =()=>{
         return(
             <TouchableOpacity
@@ -73,13 +149,32 @@ const Post = () => {
     </TouchableOpacity>
         )
     }
+    const ButtonPost = () =>{
+      return (
+        <TouchableOpacity
+        onPress = {
+          ()=>onPost()
+        }
+          activeOpacity = {0.7}
+          style={{
+            height: 25,
+            width: 75,
+            borderRadius: 4,
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text style={{color: 'gray'}}>Post</Text>
+        </TouchableOpacity>
+      );
+    }
     const renderHeader = () =>{
         return(
             <View style = {{height: 42, justifyContent:'space-between', paddingHorizontal: 8, borderWidth: 0.3, borderBottomColor:'gray', flexDirection:'row', alignItems:'center'}}>
                 <Text style = {{fontWeight: 'bold'}}>Tạo bài viết</Text>
-               <TouchableOpacity style = {{height: 25, width: 75, borderRadius: 4, backgroundColor:'rgba(0,0,0,0.2)', justifyContent:'center', alignItems:'center'}}>
-                  <Text style = {{color:'gray'}}>Đăng</Text>
-               </TouchableOpacity>
+               {
+                 isUploading ? progress() : ButtonPost()
+               }
             </View>
         )
     }
@@ -88,11 +183,18 @@ const Post = () => {
             <View  style = {{flexDirection:'row', height: 70, alignItems:'center', paddingStart: 10}}>
                 <Image source = {{uri: 'https://instagram.fsgn7-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/136943338_390558105575066_810449655692537558_n.jpg?_nc_ht=instagram.fsgn7-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=aYpgxP8RlPQAX_8tlLe&tp=1&oh=c1eaee838788257414bab88bca3d6c72&oe=602E527D'}} style = {{width: 50, height: 50, borderRadius: 25}} />
                 <View style = {{height: 50, marginStart: 8}}>
-                    <Text style = {{fontWeight:'bold'}}>Trần Tuấn dz</Text>
+                    <Text style = {{fontWeight:'bold'}}>{user.Name}</Text>
                     <View style = {{flexDirection:'row'}}>
-                    <TouchableOpacity style = {{height: 20, borderWidth: 0.5, width: 70, justifyContent:'center', alignItems:'center', borderRadius: 2, flexDirection:'row', marginHorizontal: 4}}>
+                    <TouchableOpacity
+                      activeOpacity = {0.7}
+                    onPress = {
+                      ()=>{navigation.navigate('PostAudience',{
+                        PostAudience: user.PostAudience
+                      });}
+                    }
+                    style = {{height: 20, borderWidth: 0.5, paddingHorizontal: 2, justifyContent:'center', alignItems:'center', borderRadius: 2, flexDirection:'row', marginHorizontal: 4}}>
                     <Icon name = 'earth' size = {10} color = 'gray' />
-                        <Text style = {{fontSize: 10}}>Công khai</Text>
+                        <Text style = {{fontSize: 10}}>{user.PostAudience}</Text>
                         <Icon name = 'menu-down-outline' size = {10} color = 'gray' />
                     </TouchableOpacity>
 
@@ -112,10 +214,10 @@ const Post = () => {
           onTouchStart={() => btRef.current.snapTo(2)}
           multiline
           placeholder="Anh đang nghĩ gì dọ?"
-          value = {contentValue}
-          style={{width:width, fontSize: contentValue.length < 50 ? 32: 16}}         
+          value = {postContent}
+          style={{width:width, fontSize: postContent.length < 50 ? 32: 16}}         
           onChangeText={(value) => {
-            setContentValue(value);
+            setPostContent(value);
             
           }}
         />
@@ -131,11 +233,11 @@ const Post = () => {
     }).then(images => {
         if (images)
             {
-              const path = [];
+              const paths = [];
               images.map(i=>{
                 path.push(i.path);
               })
-              setImages(path);
+              setImages(paths);
             }
     })
     }
@@ -157,11 +259,7 @@ const Post = () => {
             <View>
                {renderHeader()}
                <ScrollView style = {{marginBottom: 90}}>
-               <View style={{ flexDirection: 'row',
-    alignItems: 'center',}}>
-         
-         <Progress.Pie progress={0.4} size={50} />
-        </View>
+              
                {renderInfo()}
                {inputContent()}          
                {
