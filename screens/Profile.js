@@ -1,18 +1,28 @@
-import React, {useRef, useState} from 'react'
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView, Animated, FlatList, SafeAreaView } from 'react-native'
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import tab from '../components/tab'
-import TopTab from "../navigation/TopTabNavigation";
+import React, {useRef, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+  Animated,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import tab from '../components/tab';
+import TopTab from '../navigation/TopTabNavigation';
 import FImage from 'react-native-fast-image';
-import auth from '@react-native-firebase/auth'
-import { useNavigation } from "@react-navigation/native";
+import auth from '@react-native-firebase/auth';
+import {useNavigation} from '@react-navigation/native';
 const Tab = createMaterialTopTabNavigator();
 const {width, height} = Dimensions.get('window');
 
 const Profile = () => {
- 
   const Posts = [
     {
       user: 'mmyyxx',
@@ -255,226 +265,272 @@ const Profile = () => {
       like: 99,
     },
   ];
-    const User = 
-        {user: 'aqua.error',
-        urlImage: 'https://instagram.fsgn7-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/136943338_390558105575066_810449655692537558_n.jpg?_nc_ht=instagram.fsgn7-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=aYpgxP8RlPQAX_8tlLe&tp=1&oh=c1eaee838788257414bab88bca3d6c72&oe=602E527D',
-        intro:
-         `📱|𝑾𝒐𝒓𝒌 𝑶𝒏 𝑴𝒐𝒃𝒊𝒍𝒆\n💰|𝑭𝒓𝒆𝒆 𝑾𝒐𝒓𝒌\n⭐|𝑪𝒐𝒎𝒎𝒊𝒔𝒔𝒊𝒐𝒏𝒊 𝑨𝒑𝒆𝒓𝒕𝒆`,
-        post: 52,
-        follow: ['mmyyxx',  'miu.1301', 'svg'],
-        follwing: ['mmyyxx', 'rena', 'sena']
-    }
-    const navigation = useNavigation();
-    const [selectCat, setSelectedCat] = useState('PICTURE');
-    const scrollY = useRef(new Animated.Value(0)).current; 
-    
-     const maxTop = 40;
-     const minTop = -245;
-     const topScroll = scrollY.interpolate({
-       inputRange: [0, maxTop - minTop],
-       outputRange: [maxTop , minTop + 40 + 40 ], //header + tab 
-       extrapolate: 'clamp'
-     })
+  const User = {
+    user: 'aqua.error',
+    urlImage:
+      'https://instagram.fsgn7-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/136943338_390558105575066_810449655692537558_n.jpg?_nc_ht=instagram.fsgn7-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=aYpgxP8RlPQAX_8tlLe&tp=1&oh=c1eaee838788257414bab88bca3d6c72&oe=602E527D',
+    intro: `📱|𝑾𝒐𝒓𝒌 𝑶𝒏 𝑴𝒐𝒃𝒊𝒍𝒆\n💰|𝑭𝒓𝒆𝒆 𝑾𝒐𝒓𝒌\n⭐|𝑪𝒐𝒎𝒎𝒊𝒔𝒔𝒊𝒐𝒏𝒊 𝑨𝒑𝒆𝒓𝒕𝒆`,
+    post: 52,
+    follow: ['mmyyxx', 'miu.1301', 'svg'],
+    follwing: ['mmyyxx', 'rena', 'sena'],
+  };
+  const navigation = useNavigation();
+  const [selectCat, setSelectedCat] = useState('PICTURE');
+  const scrollY = useRef(new Animated.Value(0)).current;
 
-    renderHeader = () =>{
-        return(
-            <View style = {styles.containerHeader}>
-                <View style = {{flexDirection:'row', justifyContent:'center'}}>
-                    <Text style = {styles.userName}>{User.user}</Text>
-                    <Icon name = 'chevron-down' size = {26}  style = {{bottom: -2}}/>
-                </View>
-                <View style = {{flexDirection: 'row'}}>
-                <Icon name = 'plus' size = {28} color = 'black' style = {{marginEnd: 12}}  onPress = {()=>
-                {
-                  auth().signOut();
-                  navigation.navigate('Login');
-                }} />
-                <Icon name = 'menu' size = {28} color = 'black' /> 
-                </View>
+  const maxTop = 40;
+  const minTop = -245;
+  const topScroll = scrollY.interpolate({
+    inputRange: [0, maxTop - minTop],
+    outputRange: [maxTop, minTop + 40 + 40], //header + tab
+    extrapolate: 'clamp',
+  });
+
+  renderHeader = () => {
+    return (
+      <View style={styles.containerHeader}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <Text style={styles.userName}>{User.user}</Text>
+          <Icon name="chevron-down" size={26} style={{bottom: -2}} />
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Icon
+            name="plus"
+            size={28}
+            color="black"
+            style={{marginEnd: 12}}
+            onPress={() => {
+              auth().signOut();
+              navigation.navigate('Login');
+            }}
+          />
+          <Icon name="menu" size={28} color="black" />
+        </View>
+      </View>
+    );
+  };
+
+  const renderInfo = () => {
+    //heigh: 255
+    return (
+      <Animated.View style={[styles.containerInfo, {top: topScroll}]}>
+        {/* header */}
+        <View style={styles.headerInfo}>
+          <View
+            style={{
+              width: width / 3,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={{uri: User.urlImage}}
+              style={{width: 90, height: 90, borderRadius: 45}}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: width - width / 3,
+              paddingEnd: 4,
+            }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginHorizontal: 2,
+              }}>
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>52</Text>
+              <Text>Bài viết</Text>
             </View>
-        )
-    } 
-  
-    
-   const renderInfo = () => { //heigh: 255
-        return (
-          <Animated.View style={[styles.containerInfo, {top: topScroll}]}>
-            {/* header */}
-            <View style={styles.headerInfo}>
-              <View
-                style={{                
-                  width: width / 3,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Image
-                  source={{uri: User.urlImage}}
-                  style={{width: 90, height: 90, borderRadius: 45}}
-                />
-              </View>
-             <View style = {{flexDirection: 'row', width: width -width /3, paddingEnd: 4}}>
-             <View
-                style={{                
-                     flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 2
-                }}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>52</Text>
-                <Text>Bài viết</Text>
-              </View>
-              <View
-                style={{                
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 2
-                }}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>{User.follow.length}</Text>
-                <Text numberOfLines = {1}>Người theo dõi</Text>
-              </View>
-              <View
-                style={{              
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 2
-                }}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>{User.follwing.length}</Text>
-                <Text numberOfLines = {1}>Đang theo dõi</Text>
-              </View>
-             </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginHorizontal: 2,
+              }}>
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                {User.follow.length}
+              </Text>
+              <Text numberOfLines={1}>Người theo dõi</Text>
             </View>
-            {/* intro */}
-            <Text  numberOfLines = {3} style = {{marginHorizontal: 30, alignContent: 'center',  height: 60, }}>
-                {User.intro}
-            </Text>
-           <View style = {{}}>
-           <TouchableOpacity style = {{height: 25, width: '70%', borderWidth: 1, borderColor: 'gray',  backgroundColor:'#fff',   borderRadius: 3, justifyContent:'center', alignItems:'center', alignSelf:'center', marginBottom: 20}}> 
-                  <Text>Chỉnh sửa trang cá nhân</Text>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginHorizontal: 2,
+              }}>
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>
+                {User.follwing.length}
+              </Text>
+              <Text numberOfLines={1}>Đang theo dõi</Text>
+            </View>
+          </View>
+        </View>
+        {/* intro */}
+        <Text
+          numberOfLines={3}
+          style={{marginHorizontal: 30, alignContent: 'center', height: 60}}>
+          {User.intro}
+        </Text>
+        <View style={{}}>
+          <TouchableOpacity
+            style={{
+              height: 25,
+              width: '70%',
+              borderWidth: 1,
+              borderColor: 'gray',
+              backgroundColor: '#fff',
+              borderRadius: 3,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              marginBottom: 20,
+            }}>
+            <Text>Chỉnh sửa trang cá nhân</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <View
+            style={{flexDirection: 'row', alignItems: 'flex-end', height: 40}}>
+            <TouchableOpacity
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 40,
+                backgroundColor: '#fff',
+                width: width / 2,
+              }}>
+              <Icon
+                name="view-dashboard-outline"
+                size={26}
+                color={selectCat === 'PICTURE' ? 'black' : 'gray'}
+              />
             </TouchableOpacity>
-           </View>
-           <View >
-           <View style = {{flexDirection:'row', alignItems:'flex-end', height: 40}}>
-              <TouchableOpacity style = {{justifyContent:'center', alignItems:'center', height: 40, backgroundColor: '#fff', width: width/2,}}>
-                  <Icon name = 'view-dashboard-outline' size = {26} color = {selectCat === 'PICTURE'? 'black': 'gray'} />                              
-              </TouchableOpacity>
-              <TouchableOpacity style = {{justifyContent:'center', alignItems:'center', height: 40, backgroundColor: '#fff', width: width/2}}>
-                <Icon name = 'contacts-outline' size = {26}  color = {selectCat === 'STORY'? 'black': 'gray'} />
-              </TouchableOpacity>
-            </View>
-           </View>
-          
-           
-          </Animated.View>
-        );
-    }
-    function renderitem({item}){
-      return(
-        <TouchableOpacity
-
+            <TouchableOpacity
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 40,
+                backgroundColor: '#fff',
+                width: width / 2,
+              }}>
+              <Icon
+                name="contacts-outline"
+                size={26}
+                color={selectCat === 'STORY' ? 'black' : 'gray'}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Animated.View>
+    );
+  };
+  function renderitem({item}) {
+    return (
+      <TouchableOpacity
         // onLongPress={() => {
         //   setItemPost(item);
         //   setvisible(true);
         // }}
         activeOpacity={0.9}
         style={{}}>
-          {/* <View style = {{width: width/3, height: height/3}}></View> */}
+        {/* <View style = {{width: width/3, height: height/3}}></View> */}
         <FImage
-         
-         style={{ width: width/3, height: width/3 }}
-        source={{
-            uri: item.urlImage,           
+          style={{width: width / 3, height: width / 3, borderWidth: 0.5, borderColor: 'white'}}
+          source={{
+            uri: item.urlImage,
             priority: FImage.priority.normal,
-        }}
-        resizeMode={FImage.resizeMode.cover}
+          }}
+          resizeMode={FImage.resizeMode.cover}
         />
       </TouchableOpacity>
-      )
-    }
-    const renderList = () =>{
-      return(
-       <FlatList
-
-       nestedScrollEnabled
-       showsVerticalScrollIndicator={false}
-       data = {Posts}
-       numColumns = {3}
-       onScroll={Animated.event([
-     { nativeEvent: { contentOffset: { y: scrollY } } }
-   ])}
-     scrollEventThrottle={16}
-     style = {{paddingTop: -minTop   }} 
-    
-    renderItem = {(item)=>renderitem(item)}
-    />
-      )
-    }
-  const  renderRightActions = (progress, dragX) =>{
-    const scale = dragX.interpolate({
-      inputRange: [-width,  0],
-      outputRange:[1, 0],
-      extrapolate:'clamp'
-    })
-      return (
-        <Animated.View style={{transform: [{scale: scale}]}}>
-          {renderList()}
-        </Animated.View>
-      );
-    }
- 
+    );
+  }
+  const renderList = () => {
     return (
-        <SafeAreaView style = {{flex :1}}> 
-           
-           {renderHeader()}
-            {renderInfo()}     
-           
-            <ScrollView  onScroll={Animated.event([
-            { nativeEvent: { contentOffset: { y: scrollY } } }
-          ])}        
-            scrollEventThrottle={16}
-            style = {{  zIndex: 0, backgroundColor: '#fff'}}  
-           >
-             <Swipeable friction = {0.7} onSwipeableRightWillOpen = {()=>setSelectedCat('STORY')} onSwipeableWillClose = {()=>setSelectedCat('PICTURE')} renderRightActions = {renderRightActions}  >
-            {renderList()}
-             </Swipeable>   
-                   </ScrollView> 
-        </SafeAreaView>
-    )
-}
+      <FlatList
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}
+        data={Posts}
+        numColumns={3}
+        onScroll={Animated.event([
+          {nativeEvent: {contentOffset: {y: scrollY}}},
+        ])}
+        scrollEventThrottle={16}
+        style={{paddingTop: -minTop}}
+        renderItem={(item) => renderitem(item)}
+      />
+    );
+  };
+  const renderRightActions = (progress, dragX) => {
+    const scale = dragX.interpolate({
+      inputRange: [-width, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+    return (
+      <Animated.View style={{transform: [{scale: scale}]}}>
+        {renderList()}
+      </Animated.View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      {renderHeader()}
+      {renderInfo()}
+
+      <ScrollView
+        onScroll={Animated.event([
+          {nativeEvent: {contentOffset: {y: scrollY}}},
+        ])}
+        scrollEventThrottle={16}
+        style={{zIndex: 0, backgroundColor: '#fff'}}>
+        <Swipeable
+          friction={0.7}
+          onSwipeableRightWillOpen={() => setSelectedCat('STORY')}
+          onSwipeableWillClose={() => setSelectedCat('PICTURE')}
+          renderRightActions={renderRightActions}>
+          {renderList()}
+        </Swipeable>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    containerHeader: {
-        flexDirection: 'row',
-        height: 40,
-        width: width,        
-        justifyContent:'space-between',
-        alignItems:'center',
-        paddingHorizontal: 12,
-        borderBottomWidth: 0.4,
-        borderColor:'gray',
-        backgroundColor:'#ffff',
-        zIndex: 2
-       
-    },
-    containerInfo: {
-        position:'absolute',
-        width: width,       
-        zIndex: 1  , 
-        backgroundColor:'#fff'      
-    },
-    headerInfo: {
-        flexDirection: 'row',
-        height: 100,       
-    },
-    userName :{
-        fontSize: 18,
-        fontWeight: 'bold'
-    }
+  container: {
+    flex: 1,
+  },
+  containerHeader: {
+    flexDirection: 'row',
+    height: 40,
+    width: width,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    borderBottomWidth: 0.4,
+    borderColor: 'gray',
+    backgroundColor: '#ffff',
+    zIndex: 2,
+  },
+  containerInfo: {
+    position: 'absolute',
+    width: width,
+    zIndex: 1,
+    backgroundColor: '#fff',
+  },
+  headerInfo: {
+    flexDirection: 'row',
+    height: 100,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
 
-})
-
-export default Profile
+export default Profile;
