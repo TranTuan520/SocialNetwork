@@ -3,6 +3,10 @@ Social Network mini using React Native + Firebase
 
 ## Preview
 
+### Login, Signup Screen
+<img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/login.png" width="250"   alt="Login screen" />
+<img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/signupp.png" width="250"   alt="Signup screen" /> 
+
 ### Home Screen
 <img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/home.png" width="250"   alt="home screen" />
 
