@@ -9,6 +9,9 @@ Social Network mini using React Native + Firebase
 ### Home Screen
 <img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/home.png" width="250"   alt="home screen" />
 
+### Notification Screen
+<img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/notification.png" width="250"   alt="notification1 screen" />
+
 ### Search Screen
 <img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/search.png" width="250"   alt="Search 1" /> <img src="https://github.com/TranQuangTuan52/SocialNetwork/blob/master/screenshot/search1.png" width="250"   alt="Search 2" />
 
