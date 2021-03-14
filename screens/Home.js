@@ -1,192 +1,205 @@
-import React from 'react'
-import { View, Text, StatusBar, SafeAreaView ,
-StyleSheet,
-FlatList,
-Image,
-ScrollView } from 'react-native'
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  StatusBar,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  Image,
+  ScrollView,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PushNotification from 'react-native-push-notification'
 import Story from '../components/StoryComponent';
 import Post from '../components/PostComponent';
-const user = [
-        {
-            name: 'Marry',
-            image: ['https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/137525778_3715474288512867_8204082987338777527_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=q6oqjgVGROAAX8FX-2J&tp=1&oh=f923bbbf9e8c626d5ea9c9817fe8a812&oe=602D6359&ig_cache_key=MjQ4NTczMzYxMTIyODU2NjgzMw%3D%3D.2', 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/134406424_861768074597530_6386055446260632525_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=110&_nc_ohc=609UwbZCnmwAX-D-Zjb&tp=1&oh=bde4c21112bc9004752d57a1aad328dc&oe=602CB43C']
-        },
-        {
-            name: 'mmyyxx',
-            image:[ 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF', 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/128002872_191405115910836_822736510377552316_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=0cmd7HasooYAX893hZy&tp=1&oh=c5e764501abaa5bfff4267d28908673a&oe=602B6680']
-        },
-        {
-            name: 'Kieu',
-            image:[ 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/128002872_191405115910836_822736510377552316_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=0cmd7HasooYAX893hZy&tp=1&oh=c5e764501abaa5bfff4267d28908673a&oe=602B6680']
-        },
-        {
-            name: 'Luxy',
-            image:[ 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138425911_320760755867046_5679684663346968231_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=FKL129zHRxgAX-drWhH&tp=1&oh=a61f71ecd11c3bf3ac790b5b5ade9e0b&oe=602C9FC2',]
-        },
-        {
-            name: 'Trang',
-            image:[ 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/138342164_425520808652373_9220565189668521573_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=XEd5nsfwYccAX_UPfxY&tp=1&oh=65d1b4a17cd3457e114c51540b0b8bba&oe=602CB890&ig_cache_key=MjQ4NjM0MjI1NjY0NzQ0NTI1OQ%3D%3D.2',]
-        },
-        {
-            name: 'Kery',
-            image:[  'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/136991524_1151790858588325_3895015240353904010_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=101&_nc_ohc=cwE8VEBJbLcAX_9DuoK&tp=1&oh=090033c4a65b190b7e8f31325ef4974c&oe=602B985D']
-        },
-        {
-            name: 'BeDauTay',
-            image:[ 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/136650117_812277856296427_554900269540695418_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=SVyoBdcpTjcAX9X91Ld&tp=1&oh=2e0f823a570925b90404e6894302a16e&oe=602C5CF9&ig_cache_key=MjQ4MzQxNTE1OTY3MTA3MTE0NA%3D%3D.2']
-        },
 
-    ]
-   const posts = [
-       {
-           user: 'mmyyxx',
-           avatar: 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
-           content: ' Vitamin ngủ ngonnn 😍🌹❤️',
-           like: 903,
-           time: '9p',
-           images:[
-               'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-               'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-               'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139127587_747476652849152_6431918335175206230_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=BMfZH32H1PIAX-A2gL5&tp=1&oh=f67a5f82294c1a79c0ecad4ab69016f4&oe=602C7426',
-               'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139820169_405322113907434_2432043208623205274_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=6RVS_oTqMQMAX_dOw8h&tp=1&oh=96bfe0ca20c1c13f297cfc44c97f51ff&oe=602DCCD6',
-
-           ]
-       },
-       {
-        user: 'aqua.52',
-        avatar: 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
-        content: 'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
-        like: 903,
-        time: '9p',
-        images:[
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139027024_1589069887957754_7595135526030898728_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=NEzcA0W21vAAX-wivz3&tp=1&oh=0744e23d2e221986d0de01140ae64415&oe=602B8C1C',
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139127587_747476652849152_6431918335175206230_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=BMfZH32H1PIAX-A2gL5&tp=1&oh=f67a5f82294c1a79c0ecad4ab69016f4&oe=602C7426',
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139820169_405322113907434_2432043208623205274_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=6RVS_oTqMQMAX_dOw8h&tp=1&oh=96bfe0ca20c1c13f297cfc44c97f51ff&oe=602DCCD6',
-
-        ]
-    }
-    ,
-       {
-        user: 'aqua.52',
-        avatar: 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
-        content: 'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
-        like: 903,
-        time: '9p',
-        images:[
-            'https://instagram.fsgn7-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/136943338_390558105575066_810449655692537558_n.jpg?_nc_ht=instagram.fsgn7-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=aYpgxP8RlPQAX_8tlLe&tp=1&oh=c1eaee838788257414bab88bca3d6c72&oe=602E527D',
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139127587_747476652849152_6431918335175206230_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=BMfZH32H1PIAX-A2gL5&tp=1&oh=f67a5f82294c1a79c0ecad4ab69016f4&oe=602C7426',
-            'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139820169_405322113907434_2432043208623205274_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=6RVS_oTqMQMAX_dOw8h&tp=1&oh=96bfe0ca20c1c13f297cfc44c97f51ff&oe=602DCCD6',
-
-        ]
-    },
-    {
-     user: 'aqua.52',
-     avatar: 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
-     content: 'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
-     like: 903,
-     time: '9p',
-     images:[
-         'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/137525778_3715474288512867_8204082987338777527_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=q6oqjgVGROAAX8FX-2J&tp=1&oh=f923bbbf9e8c626d5ea9c9817fe8a812&oe=602D6359&ig_cache_key=MjQ4NTczMzYxMTIyODU2NjgzMw%3D%3D.2',
-         'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-         'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139127587_747476652849152_6431918335175206230_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=BMfZH32H1PIAX-A2gL5&tp=1&oh=f67a5f82294c1a79c0ecad4ab69016f4&oe=602C7426',
-         'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139820169_405322113907434_2432043208623205274_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=6RVS_oTqMQMAX_dOw8h&tp=1&oh=96bfe0ca20c1c13f297cfc44c97f51ff&oe=602DCCD6',
-
-     ]
- },
- {
-  user: 'aqua.52',
-  avatar: 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
-  content: 'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
-  like: 903,
-  time: '9p',
-  images:[
-      'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/138342164_425520808652373_9220565189668521573_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=XEd5nsfwYccAX_UPfxY&tp=1&oh=65d1b4a17cd3457e114c51540b0b8bba&oe=602CB890&ig_cache_key=MjQ4NjM0MjI1NjY0NzQ0NTI1OQ%3D%3D.2',
-      'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-      'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139127587_747476652849152_6431918335175206230_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=BMfZH32H1PIAX-A2gL5&tp=1&oh=f67a5f82294c1a79c0ecad4ab69016f4&oe=602C7426',
-      'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139820169_405322113907434_2432043208623205274_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=6RVS_oTqMQMAX_dOw8h&tp=1&oh=96bfe0ca20c1c13f297cfc44c97f51ff&oe=602DCCD6',
-
-  ]
-},
-{
- user: 'aqua.52',
- avatar: 'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
- content: 'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
- like: 903,
- time: '9p',
- images:[
-     'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/e35/s320x320/125318130_407067327134426_5140667209929164754_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=5u8H3YoPI7IAX-pk0v3&tp=1&oh=02908e2d4656188afc8eddad5eec3ea9&oe=602C6BCF',
-     'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/138933677_868087293975928_4276258689558708869_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=104&_nc_ohc=RXR-h6nXrioAX9JkXPz&tp=1&oh=aa4eedd85e1ef0f5efa244a0a2c2e6fa&oe=602CE4FD',
-     'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139127587_747476652849152_6431918335175206230_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=108&_nc_ohc=BMfZH32H1PIAX-A2gL5&tp=1&oh=f67a5f82294c1a79c0ecad4ab69016f4&oe=602C7426',
-     'https://instagram.fsgn10-1.fna.fbcdn.net/v/t51.2885-15/sh0.08/e35/p640x640/139820169_405322113907434_2432043208623205274_n.jpg?_nc_ht=instagram.fsgn10-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=6RVS_oTqMQMAX_dOw8h&tp=1&oh=96bfe0ca20c1c13f297cfc44c97f51ff&oe=602DCCD6',
-
- ]
-}
-   ] 
 const Home = () => {
-    
-    return (
-     //  <StatusBar barStyle ='dark-content'>
-           <SafeAreaView  style = {{flex: 1}}>
-               {renderHeader()}     
-              
-               <ScrollView maximumZoomScale = {5}>
-               {renderStories()}
-                <Post item = {posts[0]} />
-                <Post item = {posts[1]} />
-                <Post item = {posts[2]} />
-                <Post item = {posts[3]} />
-                <Post item = {posts[4]} />
-                <Post item = {posts[5]} />                
-               </ScrollView>
+  useEffect(() => {
+  
+  PushNotification.configure({
+    // (optional) Called when Token is generated (iOS and Android)
+    onRegister: function (token) {
+      console.log("TOKEN:", token);
+    },
+  
+    // (required) Called when a remote is received or opened, or local notification is opened
+    onNotification: function (notification) {
+      console.log("NOTIFICATION:", notification);
+      notification.finish(PushNotificationIOS.FetchResult.NoData);
+    },
+  
+    permissions: {
+      alert: true,
+      badge: true,
+      sound: true,
+    },
+    popInitialNotification: true,
+    requestPermissions: true,
+  });
+    testPush()
+  }, [])
+  
+  const testPush = () => {
+    //alert('f')
+    PushNotification.localNotification({
+     
+      title: "My Notification Title", // (optional)
+      message: "My Notification Message", // (required)
+     
+    });
+  }
+  return (
+    //  <StatusBar barStyle ='dark-content'>
+    <SafeAreaView style={{flex: 1}}>
+      {renderHeader()}
 
-           </SafeAreaView>
-     //  </StatusBar>
-    )
-}
-renderPost=()=>{
-
-}
-renderHeader = () => {    
-    return(
-        <View style = {styles.containerHeader} >
-            <Image  source = {require('../assets/images/logo3.png')} style = {styles.logo} resizeMode = 'stretch'  />
-            <Icon name = 'send' size  = {26} color = 'gray' />
-        </View>
-    )
-}
-renderStories = () =>{
-    return(
-        <FlatList
-        style = {{marginTop: 8}}
-         data = {user} 
-         horizontal
-         showsHorizontalScrollIndicator = {false}
-         keyExtractor = {user.name}
-         renderItem = {(item)=>Story(item) }/>
-    )
-}
+      <ScrollView maximumZoomScale={5} showsVerticalScrollIndicator = {false}>
+        {renderStories()}
+        <Post item={posts[0]} />
+        <Post item={posts[1]} />
+        <Post item={posts[2]} />
+        <Post item={posts[3]} />        
+      </ScrollView>
+    </SafeAreaView>
+    //  </StatusBar>
+  );
+};
+renderPost = () => {};
+renderHeader = () => {
+  return (
+    <View style={styles.containerHeader}>
+      <Image
+        source={require('../assets/images/logo3.png')}
+        style={styles.logo}
+        resizeMode="stretch"
+      />
+      <Icon name="send" size={26} color="gray" />
+    </View>
+  );
+};
+renderStories = () => {
+  return (
+    <FlatList
+      style={{marginTop: 8}}
+      data={user}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      keyExtractor={user.name}
+      renderItem={(item) => Story(item)}
+    />
+  );
+};
 
 const styles = StyleSheet.create({
-    containerHeader:{              
-        height: 40,      
-        flexDirection:'row',
-         justifyContent:'space-between',
-        alignItems:'center',
-        marginHorizontal: 6,
-        marginVertical: 2,
-        borderBottomWidth: 0.2,
-         
-        borderColor:'gray'
-    },
-    logo:{
-        width: 130,
-        height: 30,
-         
-    }
-})
+  containerHeader: {
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 6,
+    marginVertical: 2,
+    borderBottomWidth: 0.2,
 
-export default Home
+    borderColor: 'gray',
+  },
+  logo: {
+    width: 130,
+    height: 30,
+  },
+});
+const user = [
+  {
+    name: 'Marry',
+    image: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/155806873_150481760168912_6301902805152248664_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=108&_nc_ohc=QI2wlTvL2KwAX9eo0s0&oh=300a0661bee6314aa8b6edbc7c5e28e3&oe=606A995C',
+    ],
+  },
+  {
+    name: 'mmyyxx',
+    image: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/156401037_146089710618463_4999696311250436476_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=107&_nc_ohc=n9wiTFYdgDcAX_aLbQa&oh=0dfe118d5b1ecca0dd399fa06f050309&oe=606A0AC5',
+    ],
+  },
+  {
+    name: 'Kieu',
+    image: [
+      'https://instagram.fvca1-2.fna.fbcdn.net/v/t51.2885-15/e35/155907296_1345080935856441_2271993443001217013_n.jpg?tp=1&_nc_ht=instagram.fvca1-2.fna.fbcdn.net&_nc_cat=1&_nc_ohc=p_6dXT33u8QAX_8lRzh&oh=8d071ba94d9c0bf8e4c0bea2429f3638&oe=606A3148',
+    ],
+  },
+  {
+    name: 'Luxy',
+    image: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/156298993_283556740016381_1344130950368688767_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=105&_nc_ohc=138g5FG9r0UAX8s5FXg&oh=df5b43f8a7ebb2758988466676fbe668&oe=6068FBAA',
+    ],
+  },
+  {
+    name: 'Trang',
+    image: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/155925126_521504002170696_2888709443077167427_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=100&_nc_ohc=jBXLz6BzjKAAX_CAtak&oh=43c7d2cbb0c6a0e478a25f9784553403&oe=606C5300',
+    ],
+  },
+  {
+    name: 'Kery',
+    image: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/156264101_429519671462251_5052499891791548361_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=107&_nc_ohc=yhRPuJt6crQAX_4eLTJ&oh=4b163e7d1599c3074e86b613bf460b36&oe=606B59FE',
+    ],
+  },
+  {
+    name: 'BeDauTay',
+    image: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/154935482_270019247867166_5229810550483963569_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=106&_nc_ohc=IjsTrkwMkWUAX-5Q6QY&oh=99700688495c5c0b887e04ee75e628be&oe=6068CC37',
+    ],
+  },
+];
+const posts = [
+  {
+    user: 'mmyyxx',
+    avatar:
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/156401037_146089710618463_4999696311250436476_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=107&_nc_ohc=n9wiTFYdgDcAX_aLbQa&oh=0dfe118d5b1ecca0dd399fa06f050309&oe=606A0AC5',
+    content: ' Vitamin ngủ ngonnn 😍🌹❤️',
+    like: 903,
+    time: '9p',
+    images: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/155914718_433155937770444_4664812381683004961_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=100&_nc_ohc=3Ca3PWZ_70cAX9C_ka_&oh=2bfcf0ba6d316eea3ac254811cda1b70&oe=60698BB6',
+    ],
+  },
+  {
+    user: 'aqua.52',
+    avatar:
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/156259327_495587185179156_8425616987003641997_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=100&_nc_ohc=DKABiTL5yx8AX905CHu&oh=2249aa5c528ca5dfbb9eda3bcdf4ed0a&oe=6069020C',
+    content:
+      'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
+    like: 903,
+    time: '9p',
+    images: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/156259327_495587185179156_8425616987003641997_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=100&_nc_ohc=DKABiTL5yx8AX905CHu&oh=2249aa5c528ca5dfbb9eda3bcdf4ed0a&oe=6069020C',
+    ],
+  },
+  {
+    user: 'aqua.52',
+    avatar:
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/155873141_824416265084441_4839298820090551813_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=105&_nc_ohc=khPh5wZrX0oAX8kX1ZT&oh=11c2c295b9765e8e571af037261a449e&oe=606939CE',
+    content:
+      'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
+    like: 903,
+    time: '9p',
+    images: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/155873141_824416265084441_4839298820090551813_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=105&_nc_ohc=khPh5wZrX0oAX8kX1ZT&oh=11c2c295b9765e8e571af037261a449e&oe=606939CE',
+    ],
+  },
+  {
+    user: 'aqua.52',
+    avatar:
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/156778283_865575777627048_1488012417894927812_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=100&_nc_ohc=BARP8hBqweIAX-DRvVP&oh=09c7bae8921b615288fc24229a8ab1ec&oe=606A4972',
+    content:
+      'Hết noel rồi ... đã bảo k thích noel rồi ý ... khộ ghê ... đã bảo k thích rùi ý ... mệt lém í ... 😆😆😆',
+    like: 903,
+    time: '9p',
+    images: [
+      'https://scontent-hkt1-2.cdninstagram.com/v/t51.2885-15/e35/p1080x1080/156778283_865575777627048_1488012417894927812_n.jpg?tp=1&_nc_ht=scontent-hkt1-2.cdninstagram.com&_nc_cat=100&_nc_ohc=BARP8hBqweIAX-DRvVP&oh=09c7bae8921b615288fc24229a8ab1ec&oe=606A4972',
+    ],
+  },
+
+];
+export default Home;
